@@ -10,19 +10,16 @@ class Solution
 public:
     int lengthOfLongestSubstring(string s)
     {
-        int maxlen = 0;
-        for (int i = 0; i < s.size(); i++)
+        unordered_map<char, int> mp;
+        int maxlen = 0, left = 0;
+        for (int right = 0; right < s.size(); right++)
         {
-            unordered_set<char> chars;
-
-            for (int j = i; j < s.size(); j++)
+            if (mp.count(s[right]) && mp[s[right]] >= left)
             {
-                if (chars.count(s[j]) == 1)
-                    break;
-
-                chars.insert(s[j]);
-                maxlen = max(maxlen, j - i + 1);
+                left = mp[s[right]] + 1;
             }
+            mp[s[right]] = right;
+            maxlen = max(maxlen, right - left + 1);
         }
         return maxlen;
     }
