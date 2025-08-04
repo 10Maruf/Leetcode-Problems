@@ -13,27 +13,42 @@ public:
 
         sort(nums.begin(), nums.end());
         vector<vector<int>> ans;
-        set<vector<int>> s;
+
         for (int i = 0; i < nums.size(); i++)
         {
-            nums[i];
-            for (int j = i + 1; j < nums.size(); j++)
+            if (i > 0 && nums[i] == nums[i - 1])
+                continue;
+
+            int j = i + 1;
+            int k = nums.size() - 1;
+
+            while (j < k)
             {
-                for (int k = j + 1; k < nums.size(); k++)
+                int sum = nums[i] + nums[j] + nums[k];
+
+                if (sum < 0)
                 {
-                    if (nums[i] + nums[j] + nums[k] == 0)
-                    {
-                        vector<int> temp = {nums[i], nums[j], nums[k]};
-                        sort(temp.begin(), temp.end());
-                        s.insert(temp);
-                    }
+                    j++;
+                }
+                else if (sum > 0)
+                {
+                    k--;
+                }
+                else
+                {
+                    ans.push_back({nums[i], nums[j], nums[k]});
+
+                    while (j < k && nums[j] == nums[j + 1])
+                        j++;
+                    while (j < k && nums[k] == nums[k - 1])
+                        k--;
+
+                    j++;
+                    k--;
                 }
             }
         }
-        for (auto i : s)
-        {
-            ans.push_back(i);
-        }
+
         return ans;
     }
 };
