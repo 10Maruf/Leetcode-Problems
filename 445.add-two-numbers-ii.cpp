@@ -15,32 +15,52 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
-class Solution {
+class Solution
+{
 public:
-    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        ListNode* dummy = new ListNode(0);
-        ListNode* p = l1;
-        ListNode* q = l2;
-        ListNode* curr = dummy;
-        int carry = 0;
+    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
+    {
+        stack<int> s1, s2;
 
-        while (p != nullptr || q != nullptr || carry != 0) {
-            int sum = carry;
-            if (p != nullptr) {
-                sum += p->val;
-                p = p->next;
-            }
-            if (q != nullptr) {
-                sum += q->val;
-                q = q->next;
-            }
-            carry = sum / 10;
-            curr->next = new ListNode(sum % 10);
-            curr = curr->next;
+        while (l1)
+        {
+            s1.push(l1->val);
+            l1 = l1->next;
         }
 
-        return dummy->next;
+        while (l2)
+        {
+            s2.push(l2->val);
+            l2 = l2->next;
+        }
+
+        ListNode *result = nullptr;
+        int carry = 0;
+
+        while (!s1.empty() || !s2.empty() || carry)
+        {
+            int sum = carry;
+
+            if (!s1.empty())
+            {
+                sum += s1.top();
+                s1.pop();
+            }
+
+            if (!s2.empty())
+            {
+                sum += s2.top();
+                s2.pop();
+            }
+
+            carry = sum / 10;
+
+            ListNode *newNode = new ListNode(sum % 10);
+            newNode->next = result;
+            result = newNode;
+        }
+
+        return result;
     }
 };
 // @lc code=end
-
