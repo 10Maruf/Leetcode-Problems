@@ -5,25 +5,24 @@
  */
 
 // @lc code=start
-class Solution {
+class Solution
+{
 public:
-    vector<int> dailyTemperatures(vector<int>& temperatures) {
+    vector<int> dailyTemperatures(vector<int> &temperatures)
+    {
         vector<int> result(temperatures.size(), 0);
-        for (int i = 0; i < temperatures.size(); i++)
+        stack<int> index;
+        for (int i = 0; i < temperatures.size(); ++i)
         {
-           for (int j = i + 1; j < temperatures.size(); j++)
-           {
-               if (temperatures[j] > temperatures[i])
-               {
-                   result[i] = j - i;
-                   break;
-               }
-           }
+            while (!index.empty() && temperatures[i] > temperatures[index.top()])
+            {
+                int prevIndex = index.top();
+                index.pop();
+                result[prevIndex] = i - prevIndex;
+            }
+            index.push(i);
         }
         return result;
     }
 };
 // @lc code=end
-
-
-
