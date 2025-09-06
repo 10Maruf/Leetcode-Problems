@@ -10,28 +10,32 @@ class Solution
 public:
     vector<int> nextGreaterElement(vector<int> &nums1, vector<int> &nums2)
     {
-        for (int i = 0; i < nums1.size(); ++i)
-        {
-            int j = 0;
+        vector<int> result;
+        unordered_map<int, int> nextGreaterMap;
+        stack<int> s;
 
-            while (j < nums2.size() && nums2[j] != nums1[i])
+        for (int num : nums2)
+        {
+            while (!s.empty() && num > s.top())
             {
-                ++j;
+                nextGreaterMap[s.top()] = num;
+                s.pop();
             }
-            while (j < nums2.size() && nums2[j] <= nums1[i])
-            {
-                ++j;
-            }
-            if (j < nums2.size())
-            {
-                nums1[i] = nums2[j];
-            }
-            else
-            {
-                nums1[i] = -1;
-            }
+            s.push(num);
         }
-        return nums1;
+
+        while (!s.empty())
+        {
+            nextGreaterMap[s.top()] = -1;
+            s.pop();
+        }
+
+        for (int num : nums1)
+        {
+            result.push_back(nextGreaterMap[num]);
+        }
+
+        return result;
     }
 };
 // @lc code=end
